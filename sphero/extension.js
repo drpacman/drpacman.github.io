@@ -17,6 +17,9 @@
                   // Got the data - parse it and return the temperature
                   temperature = weather_data['main']['temp'];
                   callback(temperature);
+              },
+	      error: function(xhr, status, err) {
+		  callback(status)
               }
         });
     };
