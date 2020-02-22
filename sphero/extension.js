@@ -8,18 +8,15 @@
         return {status: 2, msg: 'Ready'};
     };
 
-    ext.get_temp = function(location, callback) {
-        // Make an AJAX call to the Open Weather Maps API
+    ext.check_sensors = function(callback) {
+        // Make an AJAX call to check the sensors
         $.ajax({
-              url: 'http://api.openweathermap.org/data/2.5/weather?q='+location+'&units=imperial',
-              dataType: 'jsonp',
-              success: function( weather_data ) {
-                  // Got the data - parse it and return the temperature
-                  temperature = weather_data['main']['temp'];
-                  callback(temperature);
+              url: 'http://192.168.1.67:2010/api/v1.0/sensorControl/getAvailableSensorsToStream',
+              success: function( sensorData ) {
+                  callback(sensorData[0]);
               },
-	      error: function(xhr, status, err) {
-		  callback(status)
+	          error: function(xhr, status, err) {
+		        callback(status)
               }
         });
     };
@@ -27,7 +24,7 @@
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
-            ['R', 'current temperature in city %s', 'get_temp', 'Boston, MA'],
+            ['R', 'check sensors api from local node server', 'check_sensors'],
         ]
     };
 
